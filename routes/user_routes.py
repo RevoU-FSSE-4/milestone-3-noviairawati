@@ -57,7 +57,7 @@ def login():
     except Exception as e:
         # Log the exception (print to console or use a logging framework)
         print(f"An error occurred during login: {e}")
-        return jsonify({'message': 'Internal server error'}), 500
+        return jsonify({'message': 'Login Failed'}), 500
 
 
 @user_bp.route('/logout', methods=['POST'])
