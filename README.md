@@ -14,7 +14,7 @@ This project implements a RESTful API for a banking application using Flask, MyS
 - Account: Represents user accounts with account type, balance, etc.
 - Transaction: Represents financial transactions with details like amount, type, etc.
 - Budget: Represents budget categories for expense tracking.
-Bill: Represents scheduled bill payments.
+- Bill: Represents scheduled bill payments.
 
 3. Authentication:
 Session-based authentication using Flask-Login.
@@ -26,15 +26,12 @@ Session-based authentication using Flask-Login.
 2. Install Dependencies:
 - pip install -r requirements.txt
 3. Set Up Environment Variables:
-- Create a .env file in the root directory with the following configuration:
+- ##### Create a .env file in the root directory with the following configuration:
 dotenv
-DATABASE_URI=mysql+pymysql://username:password@localhost/dbname
-SECRET_KEY=your_secret_key
-Replace username, password, localhost, and dbname with your actual database credentials.
-- Initialize Database:
-flask db init
-flask db migrate -m "Initial migration"
-flask db upgrade
+##### DATABASE_URI=mysql+pymysql://username:password@localhost/dbname
+##### SECRET_KEY=your_secret_key
+##### Replace username, password, localhost, and dbname with your actual database credentials.
+
 - Run the Application:
 flask run
 

@@ -5,6 +5,7 @@ from flask_login import login_required, current_user
 
 bp = Blueprint("bill_routes", __name__, url_prefix="/bills")
 
+
 @bp.route("", methods=["POST"])
 @login_required
 def create_bill():

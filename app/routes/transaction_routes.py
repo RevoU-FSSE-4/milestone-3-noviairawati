@@ -6,13 +6,14 @@ from flask_login import login_required, current_user
 
 bp = Blueprint("transaction_routes", __name__, url_prefix="/transactions")
 
+
 @bp.route("", methods=["GET"])
 @login_required
 def get_transactions():
     try:
         transactions = Transaction.query.filter(
-            (Transaction.from_account.has(user_id=current_user.id)) |
-            (Transaction.to_account.has(user_id=current_user.id))
+            (Transaction.from_account.has(user_id=current_user.id))
+            | (Transaction.to_account.has(user_id=current_user.id))
         ).all()
 
         if not transactions:
@@ -27,7 +28,7 @@ def get_transactions():
                 "amount": str(transaction.amount),
                 "type": transaction.type,
                 "description": transaction.description,
-                "created_at": transaction.created_at.strftime("%Y-%m-%d %H:%M:%S")
+                "created_at": transaction.created_at.strftime("%Y-%m-%d %H:%M:%S"),
             }
             transaction_list.append(transaction_data)
 
@@ -36,6 +37,7 @@ def get_transactions():
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": "Failed to fetch transactions"}), 500
+
 
 @bp.route("/<int:id>", methods=["GET"])
 @login_required
@@ -53,7 +55,7 @@ def get_transaction_by_id(id):
             "amount": str(transaction.amount),
             "type": transaction.type,
             "description": transaction.description,
-            "created_at": transaction.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            "created_at": transaction.created_at.strftime("%Y-%m-%d %H:%M:%S"),
         }
 
         return jsonify(transaction_data), 200
