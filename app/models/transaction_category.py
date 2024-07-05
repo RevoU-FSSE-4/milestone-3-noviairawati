@@ -1,4 +1,4 @@
-from mysql_connector import db
+from ..mysql_connector import db
 
 class TransactionCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -3,7 +3,7 @@
 This project implements a RESTful API for a banking application using Flask, MySQL, and SQLAlchemy. It provides endpoints for user management, account management, transaction management, and basic financial functionalities.
 
 ## Project Structure
-![alt text](image-1.png)
+
 
 ## Features Implemented
 1. RESTful API Endpoints:
