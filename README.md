@@ -73,11 +73,12 @@ POST /auth/register: Create a new user account.
 ![5](assets/deleteaccount.png)
 
 3. Transaction Management
-GET /transactions: Retrieve all transactions.
+- GET /transactions: Retrieve all transactions.
+![createtrx](assets/createtransaction.png)
 
-GET /transactions/:id: Retrieve details of a specific transaction.
+- GET /transactions/:id: Retrieve details of a specific transaction.
 
-POST /transactions: Create a new transaction (deposit, withdrawal, transfer).
+- POST /transactions: Create a new transaction (deposit, withdrawal, transfer).
 
 4. Budget Management
 - POST /budgets: Create a new budget category.

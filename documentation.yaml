@@ -1,0 +1,167 @@
+info:
+  name: Banking_Apps
+  _postman_id: "60da619c-b42a-4b08-88c5-0b3e7d4c2806"
+  schema: "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  _exporter_id: "32200384"
+
+item:
+  - name: User Management
+    item:
+      - name: Create New User
+        request:
+          method: POST
+          url: http://127.0.0.1:5000/users
+          header: []
+          body:
+            mode: raw
+            raw:
+              '{ "username": "fita", "email": "fita@gmail.com", "password": "kiki123" }'
+          description: Create a new user
+
+      - name: Login User
+        request:
+          method: POST
+          url: http://localhost:5000/users/login
+          header:
+            - key: Content-Type
+              value: application/json
+          body:
+            mode: raw
+            raw: '{ "username": "ratna", "password": "jika23" }'
+          description: Login as a user
+
+      - name: Get User Profile
+        request:
+          method: GET
+          url: http://127.0.0.1:5000/users
+          description: Retrieve user profile
+
+      - name: Update User
+        request:
+          method: PUT
+          url: http://127.0.0.1:5000/users
+          header: []
+          body:
+            mode: raw
+            raw: '{}'
+          description: Update user information
+
+      - name: Logout User
+        request:
+          method: GET
+          url: http://localhost:5000/users/logout
+          description: Logout current user
+
+  - name: Account Management
+    item:
+      - name: Create Account
+        request:
+          method: POST
+          url: http://localhost:5000/accounts
+          header: []
+          body:
+            mode: raw
+            raw: '{ "account_type": "savings", "account_number": "15", "balance": 10000000.00 }'
+          description: Create a new account
+
+      - name: Get All Accounts
+        request:
+          method: GET
+          url: http://localhost:5000/accounts
+          description: Retrieve all user accounts
+
+      - name: Get Account by ID
+        request:
+          method: GET
+          url: http://localhost:5000/accounts/2
+          description: Retrieve account details by ID
+
+      - name: Update Account
+        request:
+          method: PUT
+          url: http://localhost:5000/accounts/2
+          header: []
+          body:
+            mode: raw
+            raw: '{ "account_number": "1256667890", "account_type": "savings", "balance": "200000.00" }'
+          description: Update account details
+
+      - name: Delete Account
+        request:
+          method: DELETE
+          url: http://localhost:5000/accounts/2
+          description: Delete account by ID
+
+  - name: Transaction
+    item:
+      - name: Create Transaction
+        request:
+          method: POST
+          url: http://localhost:5000/transactions
+          header: []
+          body:
+            mode: raw
+            raw: '{ "from_account_id": 1, "to_account_id": 1, "amount": 100.00, "type": "transfer", "description": "Transfer for bill payment" }'
+          description: Create a new transaction
+
+      - name: Get Transaction
+        request:
+          method: GET
+          url: http://localhost:5000/transactions
+          description: Retrieve all transactions
+
+      - name: Get Transaction by ID
+        request:
+          method: GET
+          url: http://localhost:5000/transactions/1
+          description: Retrieve transaction details by ID
+
+  - name: Bill Management
+    item:
+      - name: Create Schedule Bill
+        request:
+          method: POST
+          url: http://localhost:5000/bills
+          header: []
+          body:
+            mode: raw
+            raw: '{ "biller_name": "Electric Company", "due_date": "2024-08-01", "amount": 150.00, "account_id": 3 }'
+          description: Create a new scheduled bill
+
+      - name: Get User's Bills
+        request:
+          method: GET
+          url: http://localhost:5000/bills
+          description: Retrieve all user bills
+
+      - name: Update Bill
+        request:
+          method: GET
+          url: http://localhost:5000/bills/1
+          description: Update bill by ID
+
+      - name: Delete Bill
+        request:
+          method: GET
+          url: http://localhost:5000/bills/1
+          description: Delete bill by ID
+
+  - name: Budget Management
+    item:
+      - name: Create Budget
+        request:
+          method: GET
+          url: http://localhost:5000/budgets
+          description: Create a new budget
+
+      - name: Get Budgets
+        request:
+          method: GET
+          url: http://localhost:5000/budgets
+          description: Retrieve all budgets
+
+      - name: Update Budget
+        request:
+          method: GET
+          url: http://localhost:5000/budgets/1
+          description: Update budget by ID

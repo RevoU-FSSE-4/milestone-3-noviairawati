@@ -47,14 +47,13 @@ def create_transaction():
         # Update to_account balance
         to_account.balance += amount
 
-        # Create the transaction object with user_id
+        # Create the transaction
         transaction = Transaction(
             from_account_id=from_account_id,
             to_account_id=to_account_id,
             amount=amount,
             type=transaction_type,
             description=description,
-            user_id=current_user.id,
         )
 
         # Add transaction to session
