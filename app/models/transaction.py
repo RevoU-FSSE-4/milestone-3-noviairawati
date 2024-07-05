@@ -11,7 +11,7 @@ class Transaction(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
    
     # Add user_id if transactions need to be associated with a user
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # Example foreign key to User model
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     from_account = db.relationship('Account', foreign_keys=[from_account_id], backref=db.backref('outgoing_transactions', lazy=True))
     to_account = db.relationship('Account', foreign_keys=[to_account_id], backref=db.backref('incoming_transactions', lazy=True))
