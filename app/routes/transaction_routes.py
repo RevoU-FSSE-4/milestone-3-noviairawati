@@ -1,70 +1,63 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify
 from ..models.transaction import Transaction
-from ..models.account import Account
 from ..mysql_connector import db
+from flask_login import login_required
 from flask_login import login_required, current_user
-from decimal import Decimal
 
 bp = Blueprint("transaction_routes", __name__, url_prefix="/transactions")
 
-
-@bp.route("", methods=["POST"])
+@bp.route("", methods=["GET"])
 @login_required
-def create_transaction():
-    data = request.json
-    from_account_id = data.get("from_account_id")
-    to_account_id = data.get("to_account_id")
-    amount = Decimal(data["amount"])
-    transaction_type = data["type"]
-    description = data.get("description")
-
+def get_transactions():
     try:
-        # Check if from_account_id is provided and valid
-        if from_account_id:
-            from_account = Account.query.filter_by(
-                id=from_account_id, user_id=current_user.id
-            ).first()
-            if not from_account:
-                return jsonify({"error": "From account not found"}), 404
-            if from_account.balance < amount:
-                return jsonify({"error": "Insufficient balance"}), 400
-            from_account.balance -= amount
+        transactions = Transaction.query.filter(
+            (Transaction.from_account.has(user_id=current_user.id)) |
+            (Transaction.to_account.has(user_id=current_user.id))
+        ).all()
 
-        # Find the to_account based on to_account_id
-        to_account = Account.query.filter_by(id=to_account_id).first()
-        if not to_account:
-            return jsonify({"error": "To account not found"}), 404
-        if from_account_id and to_account_id == from_account_id:
-            return jsonify({"error": "Cannot transfer to the same account"}), 400
-        if to_account.user_id != current_user.id:
-            return (
-                jsonify(
-                    {"error": "Unauthorized to perform transaction to this account"}
-                ),
-                403,
-            )
+        if not transactions:
+            return jsonify({"message": "No transactions found"}), 404
 
-        # Update to_account balance
-        to_account.balance += amount
+        transaction_list = []
+        for transaction in transactions:
+            transaction_data = {
+                "id": transaction.id,
+                "from_account_id": transaction.from_account_id,
+                "to_account_id": transaction.to_account_id,
+                "amount": str(transaction.amount),
+                "type": transaction.type,
+                "description": transaction.description,
+                "created_at": transaction.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            }
+            transaction_list.append(transaction_data)
 
-        # Create the transaction
-        transaction = Transaction(
-            from_account_id=from_account_id,
-            to_account_id=to_account_id,
-            amount=amount,
-            type=transaction_type,
-            description=description,
-        )
-
-        # Add transaction to session
-        db.session.add(transaction)
-
-        # Commit transaction
-        db.session.commit()
-
-        return jsonify({"message": "Transaction created successfully"}), 201
+        return jsonify(transaction_list), 200
 
     except Exception as e:
-        db.session.rollback()  # Rollback the session in case of error
         print(f"Error: {e}")
-        return jsonify({"error": "Failed to create transaction"}), 500
+        return jsonify({"error": "Failed to fetch transactions"}), 500
+
+@bp.route("/<int:id>", methods=["GET"])
+@login_required
+def get_transaction_by_id(id):
+    try:
+        transaction = Transaction.query.filter_by(id=id).first()
+
+        if not transaction:
+            return jsonify({"error": "Transaction not found"}), 404
+
+        transaction_data = {
+            "id": transaction.id,
+            "from_account_id": transaction.from_account_id,
+            "to_account_id": transaction.to_account_id,
+            "amount": str(transaction.amount),
+            "type": transaction.type,
+            "description": transaction.description,
+            "created_at": transaction.created_at.strftime("%Y-%m-%d %H:%M:%S")
+        }
+
+        return jsonify(transaction_data), 200
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Failed to fetch transaction"}), 500
